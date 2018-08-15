@@ -60,4 +60,24 @@ public class CommonUtil {
             }
         }
     }
+
+    /**
+     * 判断是否少于几
+     *
+     * @param less
+     * @param integers
+     * @return
+     */
+    public static boolean isLess(int less, Integer... integers) {
+        if (integers == null) return true;
+        for (Integer integer : integers) {
+            if (integer == null || integer < less)
+                return true;
+        }
+        return false;
+    }
+
+    public static boolean isLessZero(Integer... integers) {
+        return isLess(0, integers);
+    }
 }
