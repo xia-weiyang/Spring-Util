@@ -1,5 +1,5 @@
 group= 'com.jiushig'
-version= '1.0-SNAPSHOT'
+version= '1.0.beat'
 
 apply plugin: 'java'
 
@@ -11,6 +11,5 @@ repositories {
 
 dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE'
-    compileOnly 'org.springframework.boot:spring-boot-starter-aop:1.5.9.RELEASE'
     testImplementation 'junit:junit:4.12'
 }
