@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE'
+    compileOnly 'com.google.code.gson:gson:2.8.5'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE'
     testImplementation 'org.slf4j:slf4j-api:1.7.25'
     testImplementation 'org.slf4j:slf4j-simple:1.7.25'
