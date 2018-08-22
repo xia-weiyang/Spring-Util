@@ -1,12 +1,12 @@
-package com.jiushig.springutil;
+package com.jiushig.sample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SpringUtilApplication {
+public class SampleApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringUtilApplication.class, args);
+		SpringApplication.run(SampleApplication.class, args);
 	}
 }

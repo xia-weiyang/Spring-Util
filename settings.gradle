@@ -1,2 +1,1 @@
-rootProject.name = 'springUtil'
-
+include ':sample', ':springUtil'
