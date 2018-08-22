@@ -1,7 +1,7 @@
 group= 'com.jiushig'
 version= '1.0.beat'
 
-apply plugin: 'java'
+apply plugin: 'java-library'
 
 sourceCompatibility = 1.8
 
@@ -14,3 +14,4 @@ dependencies {
     compileOnly 'com.google.code.gson:gson:2.8.5'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE'
 }
+
