@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     compileOnly 'org.springframework.boot:spring-boot-starter-web:1.5.9.RELEASE'
-    compileOnly 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:1.5.9.RELEASE'
 }
 
