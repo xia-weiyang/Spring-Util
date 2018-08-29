@@ -137,8 +137,38 @@ public class CommonUtil {
             }
             return ip;
         } catch (Exception e) {
-            logger.warn("获取IP信息失败",e.getMessage());
+            logger.warn("获取IP信息失败", e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * 格式化文本
+     *
+     * @param text
+     * @return
+     */
+    public static String formatText(String text) {
+        if (isEmpty(text)) return text;
+        // 删除多余换行符
+        text = text.replaceAll("(\n){2,}", "\n");
+
+        return text;
+    }
+
+    /**
+     * 格式化markdow文本
+     *
+     * @param markdownText
+     * @return
+     */
+    public static String formatMarkdownText(String markdownText) {
+        markdownText = formatText(markdownText);
+        if (isEmpty(markdownText)) return null;
+        // markdown 替换
+        markdownText = markdownText.replaceAll("[#*`]", "");
+        markdownText = markdownText.replaceAll("!\\[.*?\\]\\(.*?\\)", "[图片]");
+        markdownText = markdownText.replaceAll("\\[.*?\\]\\(.*?\\)", "[链接]");
+        return markdownText;
     }
 }
