@@ -30,6 +30,7 @@ public class CommonUtilTest {
         assertTrue(CommonUtil.isEmpty(""));
     }
 
+    @Test
     public void getPort() {
         logger.info(String.valueOf(ServerInfo.getPort()));
     }
