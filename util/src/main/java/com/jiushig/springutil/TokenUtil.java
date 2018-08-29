@@ -27,9 +27,9 @@ public class TokenUtil {
 
     private static Algorithm algorithm;
 
-    private static final String KEY_USER_ID = "userId";
-    private static final String KEY_TIME = "time";
-    private static final String KEY_IP = "ip";
+    public static final String KEY_USER_ID = "userId";
+    public static final String KEY_TIME = "time";
+    public static final String KEY_IP = "ip";
 
     /**
      * 初始化Token
@@ -43,7 +43,7 @@ public class TokenUtil {
         TokenUtil.intervalTime = time * 1000 * 60;
         try {
             algorithm = Algorithm.HMAC256(secret);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             throw new RuntimeException("Token 初始化失败");
         }
     }
@@ -81,9 +81,15 @@ public class TokenUtil {
      * @return 可能为null
      */
     public static DecodedJWT getToken() {
-        String token = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-                .getRequest().getHeader("Authorization");
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if(attributes == null){
+            logger.warn("ServletRequestAttributes is null");
+            return null;
+        }
+        return getToken(attributes.getRequest().getHeader("Authorization"));
+    }
 
+    public static DecodedJWT getToken(String token) {
         if (CommonUtil.isEmpty(token))
             return null;
 
@@ -91,8 +97,8 @@ public class TokenUtil {
                 .withIssuer(issuer)
                 .build();
         DecodedJWT verify = verifier.verify(token);
-        if (verify.getClaim(KEY_TIME).asLong() > System.currentTimeMillis()) {
-            logger.debug("Token已过期 " + token);
+        if (verify.getClaim(KEY_TIME).asLong() < System.currentTimeMillis()) {
+            logger.warn("Token已过期 " + token);
             return null;
         }
         return verify;
