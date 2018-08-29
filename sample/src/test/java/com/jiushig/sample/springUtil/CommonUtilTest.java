@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -29,6 +30,20 @@ public class CommonUtilTest {
     }
 
     @Test
-    public void copyObject() {
+    public void formatText() {
+        assertEquals(CommonUtil.formatText("\n\n\n\n"), "\n");
+        assertEquals(CommonUtil.formatText("\n"), "\n");
+        assertEquals(CommonUtil.formatText("123\n13"), "123\n13");
+        assertEquals(CommonUtil.formatText("\n13"), "\n13");
+
+    }
+
+    @Test
+    public void formatMarkdownText() {
+        assertEquals(CommonUtil.formatMarkdownText("##1*1``12"), "1112");
+        assertEquals(CommonUtil.formatMarkdownText("[test](http://google.com)"), "[链接]");
+        assertEquals(CommonUtil.formatMarkdownText("![test](http://google.com)"), "[图片]");
+        assertEquals(CommonUtil.formatMarkdownText("\n\n##1*1``12[test](http://google.com)\n\n![test](http://google.com)"),
+                "\n1112[链接]\n[图片]");
     }
 }
