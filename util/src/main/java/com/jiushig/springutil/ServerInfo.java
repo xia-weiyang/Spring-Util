@@ -23,7 +23,7 @@ public class ServerInfo implements ApplicationListener<ServletWebServerInitializ
      */
     public static int getPort() {
         if (event == null) {
-            throw new RuntimeException("ServerInfo 未初始化");
+            throw new RuntimeException("ServerInfo uninitialized");
         }
         return event.getWebServer().getPort();
     }
