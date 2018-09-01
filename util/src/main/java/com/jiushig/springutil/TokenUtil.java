@@ -99,7 +99,7 @@ public class TokenUtil {
             logger.warn("ServletRequestAttributes is null");
             return null;
         }
-        return getToken(attributes.getRequest().getHeader("Authorization"));
+        return getToken(getTokenFromRequest(attributes.getRequest()));
     }
 
     private static String getTokenFromRequest(HttpServletRequest request) {
