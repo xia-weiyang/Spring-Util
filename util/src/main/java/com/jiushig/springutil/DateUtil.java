@@ -107,5 +107,18 @@ public class DateUtil {
     public static long compareCurrentTime(long time) {
         return System.currentTimeMillis() - time;
     }
+
+    /**
+     * 得到当前时间之前的时间
+     *
+     * @param minutes
+     * @return
+     */
+    public static String getPreviousTime(long minutes) {
+        long currentTime = System.currentTimeMillis();
+        currentTime -= (minutes * 60 * 1000);
+        SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return mDateFormat.format(new Date(currentTime));
+    }
 }
 

@@ -171,4 +171,16 @@ public class CommonUtil {
         markdownText = markdownText.replaceAll("\\[.*?\\]\\(.*?\\)", "[链接]");
         return markdownText;
     }
+
+    /**
+     * 生成验证码
+     *
+     * @return
+     */
+    public static int createCode() {
+        int code = (int) (Math.random() * 100000);
+        if (code < 10000)
+            return createCode();
+        return code;
+    }
 }
