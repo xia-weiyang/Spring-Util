@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -41,7 +42,7 @@ public class HttpUtil {
         logger.debug(LoggerBuilder.get("Token update success.").setDescribe(token).build());
     }
 
-    private static String request(Builder builder, HttpMethod method) {
+    private static <T> T request(Builder builder, HttpMethod method, Class<T> tClass) {
         assert builder != null;
         assert builder.url != null;
         assert method != null;
@@ -53,16 +54,22 @@ public class HttpUtil {
             url.append("?");
             builder.params.keySet().forEach(s -> url.append(s).append("=").append(builder.params.get(s)).append("&"));
         }
-        ResponseEntity<String> response = restTemplate.exchange(url.toString(), method,
-                new HttpEntity<>(builder.body, builder.headers), String.class);
+        ResponseEntity<T> response = restTemplate.exchange(url.toString(), method,
+                new HttpEntity<>(builder.body, builder.headers), tClass);
 
         if (response.getStatusCode() != HttpStatus.OK) {
             throw new HttpException(String.valueOf(response.getStatusCode().value()) + "  " + builder.toString());
         }
 
         logger.info(LoggerBuilder.get("Response success").setDescribe(builder.url).build());
-        String result = response.getBody();
-        if (result != null) result = result.trim().replaceAll("\n", "");
+        return response.getBody();
+    }
+
+    private static String request(Builder builder, HttpMethod method) {
+        String result = request(builder, method, String.class);
+        if (result != null) {
+            result = result.trim().replaceAll("\n", "");
+        }
         logger.debug(LoggerBuilder.get("Response detail").setDescribe(result).build());
         return result;
     }
@@ -115,6 +122,46 @@ public class HttpUtil {
 
     public static Result get(Builder builder) {
         return get(builder, Result.class);
+    }
+
+    /**
+     * 下载文件 get方法
+     *
+     * @param builder
+     * @param filePathAndName 以/开头 下载文件路径,包含其文件名
+     *                        其根目录为 {@link CommonUtil#getSystemPath()}
+     */
+    public static void download(Builder builder, String filePathAndName) {
+        assert (!CommonUtil.isEmpty(filePathAndName));
+
+        byte[] bytes = request(builder, HttpMethod.GET, byte[].class);
+        if (bytes == null) throw new RuntimeException("Downloaded file is null.");
+
+        ByteArrayInputStream inputStream = null;
+        FileOutputStream outputStream = null;
+        try {
+            inputStream = new ByteArrayInputStream(bytes);
+            File file = CommonUtil.createFile(CommonUtil.getSystemPath() + filePathAndName);
+            outputStream = new FileOutputStream(file);
+            int len;
+            byte[] buf = new byte[1024];
+            while ((len = inputStream.read(buf, 0, 1024)) != -1) {
+                outputStream.write(buf, 0, len);
+            }
+            outputStream.flush();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        } finally {
+            try {
+                if (inputStream != null)
+                    inputStream.close();
+                if (outputStream != null)
+                    outputStream.close();
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
     }
 
     /**

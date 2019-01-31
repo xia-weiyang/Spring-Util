@@ -5,7 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.UUID;
 
 /**
  * Created by zk on 2018/8/15.
@@ -182,5 +185,44 @@ public class CommonUtil {
         if (code < 10000)
             return createCode();
         return code;
+    }
+
+    /**
+     * UUID 不包含"-"连接符
+     *
+     * @return
+     */
+    public static String createUUID() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 创建文件
+     *
+     * @param pathAndName 文件路径,包含其文件名
+     * @return
+     */
+    public static File createFile(String pathAndName) {
+        assert (!isEmpty(pathAndName));
+        pathAndName = pathAndName.replaceAll("\\\\", "/");
+
+        if (!pathAndName.contains("/")) throw new RuntimeException("Error param pathAndName.");
+        int lastIndexOf = pathAndName.lastIndexOf("/");
+        String path = pathAndName.substring(0, lastIndexOf);
+        String name = pathAndName.substring(lastIndexOf + 1);
+        if (isEmpty(path, name)) throw new RuntimeException("Error path or name.");
+
+        File filePath = new File(path);
+        if(!filePath.exists())
+            if (!filePath.mkdirs()) throw new RuntimeException("Create dirs fail.");
+        try {
+            File file = new File(path, name);
+            if (!file.exists()) {
+                if (!file.createNewFile()) throw new RuntimeException("Create file fail.");
+            }
+            return file;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
