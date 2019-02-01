@@ -29,7 +29,7 @@ see [lastVersion](https://github.com/otjiushig/SpringUtil/releases)
 @SpringBootApplication(scanBasePackages = {"com.jiushig"})
 public class YourApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TaskApplication.class, args);
+        SpringApplication.run(YourApplication.class, args);
     }
 }
 ```
