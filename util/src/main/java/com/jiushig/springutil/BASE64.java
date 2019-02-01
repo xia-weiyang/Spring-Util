@@ -1,9 +1,6 @@
 package com.jiushig.springutil;
 
-import sun.misc.BASE64Decoder;
-import sun.misc.BASE64Encoder;
-
-import java.io.IOException;
+import org.apache.commons.codec.binary.Base64;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -21,11 +18,7 @@ public class BASE64 {
     }
 
     public static byte[] decryptToByte(String text) {
-        try {
-            return (new BASE64Decoder()).decodeBuffer(text);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            return Base64.decodeBase64(text);
     }
 
     /**
@@ -40,7 +33,7 @@ public class BASE64 {
 
 
     public static String encrypt(byte[] bytes) {
-        return (new BASE64Encoder()).encodeBuffer(bytes);
+        return Base64.encodeBase64String(bytes);
     }
 
 }

@@ -16,7 +16,7 @@ public class GsonUtil {
      */
     public static Gson get() {
         if (gson == null)
-            gson = new Gson();
+            gson = new Gson().newBuilder().disableHtmlEscaping().create();
         return gson;
     }
 
