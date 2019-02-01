@@ -4,7 +4,7 @@ Provide some basic methods and functions in Spring Boot.
 
 ## Setup
 
-Add it in your root build.gradle at the end of repositories
+- Add it in your root build.gradle at the end of repositories
 
 ```gradle
 allprojects {
@@ -14,15 +14,22 @@ allprojects {
     }
 }
 ```
-Add the dependency
 
+- Add the dependency
 ```gradle
 dependencies {
         compile 'com.github.otjiushig:SpringUtil:lastVersion'
 }
 ```
-
 see [lastVersion](https://github.com/otjiushig/SpringUtil/releases)
 
 
-
+- Add `scanBasePackages = {"com.jiushig"}` param in your `@SpringBootApplication` annotation. 
+```
+@SpringBootApplication(scanBasePackages = {"com.jiushig"})
+public class YourApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(TaskApplication.class, args);
+    }
+}
+```
