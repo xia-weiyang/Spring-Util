@@ -98,7 +98,7 @@ public class TokenUtil {
     public static DecodedJWT getToken(boolean isExpireTime) {
         DecodedJWT jwt = (DecodedJWT) SessionUtil.get("tokenInfo");
         if (jwt != null) return jwt;
-        return getToken(getTokenFromRequest(Objects.requireNonNull(SessionUtil.getRequestAttribute()).getRequest()));
+        return getToken(getTokenFromRequest(Objects.requireNonNull(SessionUtil.getRequestAttribute()).getRequest()), isExpireTime);
     }
 
     public static DecodedJWT getToken() {
