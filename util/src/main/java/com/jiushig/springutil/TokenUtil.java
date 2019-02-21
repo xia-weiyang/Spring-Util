@@ -92,12 +92,17 @@ public class TokenUtil {
     /**
      * 获取并解析token
      *
+     * @param isExpireTime 是否计算过期时间
      * @return 可能为null
      */
-    public static DecodedJWT getToken() {
+    public static DecodedJWT getToken(boolean isExpireTime) {
         DecodedJWT jwt = (DecodedJWT) SessionUtil.get("tokenInfo");
         if (jwt != null) return jwt;
         return getToken(getTokenFromRequest(Objects.requireNonNull(SessionUtil.getRequestAttribute()).getRequest()));
+    }
+
+    public static DecodedJWT getToken() {
+        return getToken(true);
     }
 
     private static String getTokenFromRequest(HttpServletRequest request) {
@@ -110,7 +115,14 @@ public class TokenUtil {
         return null;
     }
 
-    public static DecodedJWT getToken(String token) {
+    /**
+     * 获取token对象
+     *
+     * @param token
+     * @param isExpireTime 是否计算过期时间
+     * @return
+     */
+    public static DecodedJWT getToken(String token, boolean isExpireTime) {
         if (CommonUtil.isEmpty(token))
             return null;
 
@@ -118,12 +130,17 @@ public class TokenUtil {
                 .withIssuer(issuer)
                 .build();
         DecodedJWT verify = verifier.verify(token);
-        if (verify.getClaim(KEY_TIME).asLong() < System.currentTimeMillis()) {
-            logger.warn("Token expired :" + token);
-            return null;
-        }
+        if (isExpireTime)
+            if (verify.getClaim(KEY_TIME).asLong() < System.currentTimeMillis()) {
+                logger.warn("Token expired :" + token);
+                return null;
+            }
         SessionUtil.set("tokenInfo", verify);
         return verify;
+    }
+
+    public static DecodedJWT getToken(String token) {
+        return getToken(token, true);
     }
 
     /**
