@@ -105,6 +105,7 @@ public class DateUtil {
      * @return
      */
     public static long compareCurrentTime(long time) {
+        if (time < 0) throw new RuntimeException("time value error");
         return System.currentTimeMillis() - time;
     }
 
