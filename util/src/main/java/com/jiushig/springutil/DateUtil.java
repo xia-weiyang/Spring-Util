@@ -17,6 +17,7 @@ public class DateUtil {
     private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
     public static final String FORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
+    public static final String FORMAT_DEFAULT_YMD = "yyyy-MM-dd";
 
     /**
      * 获取系统当前时间
@@ -82,6 +83,7 @@ public class DateUtil {
         return date != null ? date.getTime() : 0;
     }
 
+
     public static int convertTimeInt(String time) {
         return (int) (convertTime(time) / 1000);
     }
@@ -94,8 +96,16 @@ public class DateUtil {
      * @return
      */
     public static String convertTime(long time, String format) {
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(FORMAT_DEFAULT);
+        SimpleDateFormat mDateFormat = new SimpleDateFormat(format);
         return mDateFormat.format(new Date(time));
+    }
+
+    public static String convertTime(int time, String format) {
+        return convertTime((long) time * 1000, format);
+    }
+
+    public static String convertTime(int time) {
+        return convertTime(time, FORMAT_DEFAULT);
     }
 
     /**
