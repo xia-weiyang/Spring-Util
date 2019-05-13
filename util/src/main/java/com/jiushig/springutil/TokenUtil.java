@@ -116,6 +116,15 @@ public class TokenUtil {
     }
 
     /**
+     * 获取token字符串
+     *
+     * @return
+     */
+    public static String getTokenStr() {
+        return getTokenFromRequest(Objects.requireNonNull(SessionUtil.getRequestAttribute()).getRequest());
+    }
+
+    /**
      * 获取token对象
      *
      * @param token
