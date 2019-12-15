@@ -19,6 +19,8 @@ public class DateUtil {
     public static final String FORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_DEFAULT_YMD = "yyyy-MM-dd";
 
+    private static final SimpleDateFormat dateFormatDefault = new SimpleDateFormat(FORMAT_DEFAULT);
+
     /**
      * 获取系统当前时间
      *
@@ -35,8 +37,7 @@ public class DateUtil {
      * @return
      */
     public static String getCurrentTime(long offset) {
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(FORMAT_DEFAULT);
-        return mDateFormat.format(new Date(System.currentTimeMillis() + offset));
+        return dateFormatDefault.format(new Date(System.currentTimeMillis() + offset));
     }
 
     /**
@@ -73,12 +74,11 @@ public class DateUtil {
      * @return 如果失败 则返回0
      */
     public static long convertTime(String time) {
-        SimpleDateFormat mDateFormat = new SimpleDateFormat(FORMAT_DEFAULT);
         Date date = null;
         try {
-            date = mDateFormat.parse(time);
+            date = dateFormatDefault.parse(time);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.error(String.format("time pares error %s", time), e);
         }
         return date != null ? date.getTime() : 0;
     }
@@ -128,8 +128,7 @@ public class DateUtil {
     public static String getPreviousTime(long minutes) {
         long currentTime = System.currentTimeMillis();
         currentTime -= (minutes * 60 * 1000);
-        SimpleDateFormat mDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        return mDateFormat.format(new Date(currentTime));
+        return dateFormatDefault.format(new Date(currentTime));
     }
 }
 
