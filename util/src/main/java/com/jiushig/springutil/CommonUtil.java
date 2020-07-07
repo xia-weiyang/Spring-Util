@@ -5,9 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -176,6 +180,16 @@ public class CommonUtil {
     }
 
     /**
+     * 删除换行等
+     * @param string
+     * @return
+     */
+    public static String handleString(String string){
+        if(string == null) return null;
+        return string.replaceAll("[\r\n]", "");
+    }
+
+    /**
      * 生成验证码
      *
      * @return
@@ -225,4 +239,69 @@ public class CommonUtil {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * b转为kb 并向上取整
+     *
+     * @param b
+     * @return
+     */
+    public static int bToKb(int b) {
+        return (int) Math.ceil(((float) b) / 1024f);
+    }
+
+
+    public static int toInt(Integer integer){
+        return integer == null ? 0 : integer;
+    }
+
+    /**
+     * 将list转换为分割的的字符串
+     *
+     * @param list
+     * @param split
+     * @return
+     */
+    public static String convertSplitString(@NotNull List<?> list, @NotNull String split) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Object obj : list)
+            stringBuilder.append(obj.toString()).append(split);
+        return stringBuilder.toString();
+    }
+
+    /**
+     * {@link #convertSplitString}
+     * 默认为；分割
+     *
+     * @param list
+     * @return
+     */
+    public static String convertSplitString(@NotNull List<?> list) {
+        return convertSplitString(list, ";");
+    }
+
+    /**
+     * 将分割的的字符串转换为list
+     *
+     * @param splitString
+     * @param split
+     * @return
+     */
+    public static List<String> convertListByString(@NotNull String splitString, @NotNull String split) {
+        if (isEmpty(splitString)) return new ArrayList<>();
+        return Arrays.asList(splitString.split(split));
+    }
+
+
+    /**
+     * {@link #convertListByString}
+     * 默认为；分割
+     *
+     * @param splitString
+     * @return
+     */
+    public static List<String> convertListByString(@NotNull String splitString) {
+        return convertListByString(splitString, ";");
+    }
+
 }
