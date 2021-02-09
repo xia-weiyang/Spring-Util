@@ -9,12 +9,13 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Created by Guowang on 2017/6/2.
+ * Created by xia-weiyang on 2017/6/2.
  * 时间处理工具类
+ * 所有的默认时间都是秒为单位
  */
-public class DateUtil {
+public class Date1Util {
 
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
+    private static final Logger logger = LoggerFactory.getLogger(Date1Util.class);
 
     public static final String FORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_DEFAULT_YMD = "yyyy-MM-dd";
@@ -37,7 +38,7 @@ public class DateUtil {
      * @return
      */
     public static String getCurrentTime(long offset) {
-        return dateFormatDefault.format(new Date(System.currentTimeMillis() + offset));
+        return dateFormatDefault.format(new Date(System.currentTimeMillis() + (offset * 1000)));
     }
 
     /**
@@ -68,7 +69,7 @@ public class DateUtil {
 
 
     /**
-     * 将 yyyy-MM-dd HH:mm:ss 时间转换成long
+     * 将 yyyy-MM-dd HH:mm:ss 时间转换成时间戳
      *
      * @param time
      * @return 如果失败 则返回0
@@ -80,13 +81,10 @@ public class DateUtil {
         } catch (ParseException e) {
             logger.error(String.format("time pares error %s", time), e);
         }
-        return date != null ? date.getTime() : 0;
+        final var t = date != null ? date.getTime() : 0;
+        return t / 1000;
     }
 
-
-    public static int convertTimeInt(String time) {
-        return (int) (convertTime(time) / 1000);
-    }
 
     /**
      * 将时间戳转换成字符串
@@ -97,14 +95,10 @@ public class DateUtil {
      */
     public static String convertTime(long time, String format) {
         SimpleDateFormat mDateFormat = new SimpleDateFormat(format);
-        return mDateFormat.format(new Date(time));
+        return mDateFormat.format(new Date(time * 1000));
     }
 
-    public static String convertTime(int time, String format) {
-        return convertTime((long) time * 1000, format);
-    }
-
-    public static String convertTime(int time) {
+    public static String convertTime(long time) {
         return convertTime(time, FORMAT_DEFAULT);
     }
 
@@ -116,7 +110,7 @@ public class DateUtil {
      */
     public static long compareCurrentTime(long time) {
         if (time < 0) throw new RuntimeException("time value error");
-        return System.currentTimeMillis() - time;
+        return System.currentTimeMillis() - (time * 1000);
     }
 
     /**
@@ -125,7 +119,7 @@ public class DateUtil {
      * @param minutes
      * @return
      */
-    public static String getPreviousTime(long minutes) {
+    public static String getPreviousTime(int minutes) {
         long currentTime = System.currentTimeMillis();
         currentTime -= (minutes * 60 * 1000);
         return dateFormatDefault.format(new Date(currentTime));
