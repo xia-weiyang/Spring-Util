@@ -55,7 +55,7 @@ public class Date1Util {
         calendar.set(Calendar.HOUR_OF_DAY, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
-        return convertTime(calendar.getTimeInMillis(), FORMAT_DEFAULT);
+        return convertTime(calendar.getTimeInMillis() / 1000, FORMAT_DEFAULT);
     }
 
     /**
@@ -68,7 +68,7 @@ public class Date1Util {
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
-        return convertTime(calendar.getTimeInMillis(), FORMAT_DEFAULT);
+        return convertTime(calendar.getTimeInMillis() / 1000, FORMAT_DEFAULT);
     }
 
 
