@@ -80,6 +80,7 @@ public class Date1Util {
      */
     public static long convertTime(String time) {
         if (CommonUtil.isEmpty(time)) return 0;
+        if ("0".equals(time)) return 0;
         Date date = null;
         try {
             date = dateFormatDefault.parse(time);
