@@ -79,6 +79,7 @@ public class Date1Util {
      * @return 如果失败 则返回0
      */
     public static long convertTime(String time) {
+        if (CommonUtil.isEmpty(time)) return 0;
         Date date = null;
         try {
             date = dateFormatDefault.parse(time);
