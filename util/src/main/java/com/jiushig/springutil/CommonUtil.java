@@ -89,6 +89,26 @@ public class CommonUtil {
         return isLess(0, integers);
     }
 
+    public static boolean isLessZero(Long... longs) {
+        return isLess(0, longs);
+    }
+
+    /**
+     * 判断是否少于几
+     *
+     * @param less
+     * @param longs
+     * @return
+     */
+    public static boolean isLess(long less, Long... longs) {
+        if (longs == null) return true;
+        for (Long l : longs) {
+            if (l == null || l < less)
+                return true;
+        }
+        return false;
+    }
+
     /**
      * 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址
      *
@@ -181,11 +201,12 @@ public class CommonUtil {
 
     /**
      * 删除换行等
+     *
      * @param string
      * @return
      */
-    public static String handleString(String string){
-        if(string == null) return null;
+    public static String handleString(String string) {
+        if (string == null) return null;
         return string.replaceAll("[\r\n]", "");
     }
 
@@ -227,7 +248,7 @@ public class CommonUtil {
         if (isEmpty(path, name)) throw new RuntimeException("Error path or name.");
 
         File filePath = new File(path);
-        if(!filePath.exists())
+        if (!filePath.exists())
             if (!filePath.mkdirs()) throw new RuntimeException("Create dirs fail.");
         try {
             File file = new File(path, name);
@@ -251,7 +272,7 @@ public class CommonUtil {
     }
 
 
-    public static int toInt(Integer integer){
+    public static int toInt(Integer integer) {
         return integer == null ? 0 : integer;
     }
 
@@ -304,4 +325,17 @@ public class CommonUtil {
         return convertListByString(splitString, ";");
     }
 
+    /**
+     * 从某个地址中获取ip
+     *
+     * @param host
+     * @return
+     */
+    public static String getIpFromHost(String host) {
+        if (isEmpty(host)) return null;
+        if (host.startsWith("http")) {
+            return host.split(":")[1].replaceAll("/", "");
+        }
+        return host.split(":")[0];
+    }
 }

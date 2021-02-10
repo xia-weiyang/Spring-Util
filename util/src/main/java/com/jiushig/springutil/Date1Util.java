@@ -41,6 +41,10 @@ public class Date1Util {
         return dateFormatDefault.format(new Date(System.currentTimeMillis() + (offset * 1000)));
     }
 
+    public static long getCurrentTimestamp() {
+        return System.currentTimeMillis() / 1000;
+    }
+
     /**
      * 获得今天的开始时间
      *
@@ -110,7 +114,7 @@ public class Date1Util {
      */
     public static long compareCurrentTime(long time) {
         if (time < 0) throw new RuntimeException("time value error");
-        return System.currentTimeMillis() - (time * 1000);
+        return System.currentTimeMillis() / 1000 - time;
     }
 
     /**
