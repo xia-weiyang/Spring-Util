@@ -1,19 +1,21 @@
-group= 'com.jiushig'
-version= '1.0.beat'
+plugins {
+    id 'java'
+    id 'java-library'
+}
 
-apply plugin: 'java'
-
-sourceCompatibility = 11
-targetCompatibility = 11
+group = 'com.jiushig'
+version = '1.0'
+description = "util"
+sourceCompatibility = 17
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    compileOnly 'org.springframework.boot:spring-boot-starter-web:2.0.4.RELEASE'
-    compile 'com.auth0:java-jwt:3.4.0'
-    compile 'com.google.code.gson:gson:2.8.5'
-    compile 'org.bouncycastle:bcprov-jdk15on:1.65'
+    compileOnly 'org.springframework.boot:spring-boot-starter-web:2.5.5'
+    api 'com.auth0:java-jwt:3.4.0'
+    api 'com.google.code.gson:gson:2.8.5'
+    api 'org.bouncycastle:bcprov-jdk15on:1.65'
 }
 

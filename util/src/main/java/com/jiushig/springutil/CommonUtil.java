@@ -2,10 +2,10 @@ package com.jiushig.springutil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.NonNull;
 import org.springframework.util.ClassUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -283,7 +283,7 @@ public class CommonUtil {
      * @param split
      * @return
      */
-    public static String convertSplitString(@NotNull List<?> list, @NotNull String split) {
+    public static String convertSplitString(@NonNull List<?> list, @NonNull String split) {
         StringBuilder stringBuilder = new StringBuilder();
         for (Object obj : list)
             stringBuilder.append(obj.toString()).append(split);
@@ -297,7 +297,7 @@ public class CommonUtil {
      * @param list
      * @return
      */
-    public static String convertSplitString(@NotNull List<?> list) {
+    public static String convertSplitString(@NonNull List<?> list) {
         return convertSplitString(list, ";");
     }
 
@@ -308,7 +308,7 @@ public class CommonUtil {
      * @param split
      * @return
      */
-    public static List<String> convertListByString(@NotNull String splitString, @NotNull String split) {
+    public static List<String> convertListByString(@NonNull String splitString, @NonNull String split) {
         if (isEmpty(splitString)) return new ArrayList<>();
         return Arrays.asList(splitString.split(split));
     }
@@ -321,7 +321,7 @@ public class CommonUtil {
      * @param splitString
      * @return
      */
-    public static List<String> convertListByString(@NotNull String splitString) {
+    public static List<String> convertListByString(@NonNull String splitString) {
         return convertListByString(splitString, ";");
     }
 

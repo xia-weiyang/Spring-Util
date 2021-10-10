@@ -116,6 +116,15 @@ public class HttpUtil {
         return t;
     }
 
+    public static <T> T get(Builder builder, TypeToken<T> typeToken, Predicate<T> predicate) {
+        T t = result(doGet(builder), typeToken);
+        if (!predicate.test(t)) {
+            builder.refreshHttpHeaders();
+            return result(doGet(builder), typeToken);
+        }
+        return t;
+    }
+
     public static <T> T get(Builder builder, TypeToken<T> typeToken) {
         return result(doGet(builder), typeToken);
     }
@@ -201,6 +210,15 @@ public class HttpUtil {
         if (!predicate.test(t)) {
             builder.refreshHttpHeaders();
             return result(doPost(builder), c);
+        }
+        return t;
+    }
+
+    public static <T> T post(Builder builder, TypeToken<T> typeToken, Predicate<T> predicate) {
+        T t = result(doPost(builder), typeToken);
+        if (!predicate.test(t)) {
+            builder.refreshHttpHeaders();
+            return result(doPost(builder), typeToken);
         }
         return t;
     }
