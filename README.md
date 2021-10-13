@@ -10,7 +10,12 @@ Provide some basic methods and functions in Spring Boot.
 allprojects {
     repositories {
         ...
-        maven { url 'https://www.jitpack.io' }
+        maven {
+        url = uri("https://maven.pkg.github.com/xia-weiyang/SpringUtil")
+        credentials {
+            username = "你的github账号"
+            password = "你的github token"
+        }
     }
 }
 ```
@@ -18,10 +23,10 @@ allprojects {
 - Add the dependency
 ```gradle
 dependencies {
-        compile 'com.github.otjiushig:SpringUtil:lastVersion'
+     implementation 'com.jiushig:spring-util:lastVersion'
 }
 ```
-see [lastVersion](https://github.com/otjiushig/SpringUtil/releases)
+see [lastVersion](https://github.com/xia-weiyang/SpringUtil/packages)
 
 
 - Add `scanBasePackages = {"com.jiushig"}` param in your `@SpringBootApplication` annotation. 

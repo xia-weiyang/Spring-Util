@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'java-library'
+    id 'maven-publish'
+}
+
+group = 'com.jiushig'
+version = '1.1'
+description = "sprint-util"
+sourceCompatibility = 17
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.springframework.boot:spring-boot-starter-web:2.5.5'
+    api 'com.auth0:java-jwt:3.4.0'
+    api 'com.google.code.gson:gson:2.8.5'
+    api 'org.bouncycastle:bcprov-jdk15on:1.65'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/xia-weiyang/SpringUtil")
+            credentials {
+                username = "xia-weiyang"
+                password = System.getenv("GIT_BUH_MAVEN_TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
+
