@@ -3,6 +3,7 @@ package com.jiushig.springutil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,7 +21,8 @@ public class Date1Util {
     public static final String FORMAT_DEFAULT = "yyyy-MM-dd HH:mm:ss";
     public static final String FORMAT_DEFAULT_YMD = "yyyy-MM-dd";
 
-    private static final SimpleDateFormat dateFormatDefault = new SimpleDateFormat(FORMAT_DEFAULT);
+    private static final ThreadLocal<DateFormat> threadLocalDateFormat =
+            ThreadLocal.withInitial(() -> new SimpleDateFormat(FORMAT_DEFAULT));
 
     /**
      * 获取系统当前时间
@@ -38,7 +40,7 @@ public class Date1Util {
      * @return
      */
     public static String getCurrentTime(long offset) {
-        return dateFormatDefault.format(new Date(System.currentTimeMillis() + (offset * 1000)));
+        return threadLocalDateFormat.get().format(new Date(System.currentTimeMillis() + (offset * 1000)));
     }
 
     public static long getCurrentTimestamp() {
@@ -83,7 +85,7 @@ public class Date1Util {
         if ("0".equals(time)) return 0;
         Date date = null;
         try {
-            date = dateFormatDefault.parse(time);
+            date = threadLocalDateFormat.get().parse(time);
         } catch (ParseException e) {
             logger.error(String.format("time pares error %s", time), e);
         }
@@ -128,7 +130,7 @@ public class Date1Util {
     public static String getPreviousTime(int minutes) {
         long currentTime = System.currentTimeMillis();
         currentTime -= (minutes * 60 * 1000);
-        return dateFormatDefault.format(new Date(currentTime));
+        return threadLocalDateFormat.get().format(new Date(currentTime));
     }
 }
 

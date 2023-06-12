@@ -2,6 +2,8 @@
 
 Provide some basic methods and functions in Spring Boot.
 
+https://docs.github.com/zh/packages/working-with-a-github-packages-registry/working-with-the-gradle-registry#publishing-a-package
+
 ## Setup
 
 #### Use github
