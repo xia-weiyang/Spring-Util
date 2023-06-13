@@ -338,4 +338,27 @@ public class CommonUtil {
         }
         return host.split(":")[0];
     }
+
+    /**
+     * 比较请求头中的版本是否大于[version]
+     * 对测试版本号忽略，例如4.9-b 实际比较的大小为4.9
+     *
+     * @return 大于返回1，等于0，小于-1
+     */
+    public static int compareVersion(HttpServletRequest request, String version) {
+        final String ver = request.getHeader("version");
+        if (ver == null || ver.isEmpty()) return -1;
+        if (ver.equals(version)) return 0;
+        try {
+            String[] verSplit = ver.split("-");
+            String[] versionSplit = version.split("-");
+            final int compareTo = versionSplit[0].compareTo(verSplit[0]);
+            if (compareTo > 0) return -1;
+            if (compareTo < 0) return 1;
+            return 0;
+        } catch (Exception e) {
+            logger.error(String.format("compareVersion fail: %s  reqVer:%s", version, ver), e);
+        }
+        return -1;
+    }
 }
