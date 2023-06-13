@@ -32,27 +32,6 @@ dependencies {
 ```
 see [lastVersion](https://github.com/xia-weiyang/SpringUtil/releases)
 
-#### Use jitpack
-
-- Add it in your root build.gradle at the end of repositories
-
-```gradle
-allprojects {
-	repositories {
-		...
-		maven { url 'https://jitpack.io' }
-	}
-}
-```
-
-- Add the dependency
-```
-dependencies {
-     implementation 'com.github.xia-weiyang:SpringUtil:lastVersion'
-}
-```
-see [lastVersion](https://github.com/xia-weiyang/SpringUtil/packages)
-
 ## Start
 - Add `scanBasePackages = {"com.jiushig"}` param in your `@SpringBootApplication` annotation. 
 ```
