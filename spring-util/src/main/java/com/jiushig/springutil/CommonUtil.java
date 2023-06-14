@@ -361,4 +361,18 @@ public class CommonUtil {
         }
         return -1;
     }
+
+    /**
+     * 格式化path
+     * 如果以/开头则去掉/
+     * 如果以http开头则返回空字符串
+     */
+    public static String formatPath(String path) {
+        if (path == null) return "";
+        if (path.startsWith("http")) return "";
+        while (path.startsWith("/")){
+            path = path.substring(1);
+        }
+        return path;
+    }
 }
