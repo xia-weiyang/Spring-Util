@@ -370,9 +370,23 @@ public class CommonUtil {
     public static String formatPath(String path) {
         if (path == null) return "";
         if (path.startsWith("http")) return "";
-        while (path.startsWith("/")){
+        while (path.startsWith("/")) {
             path = path.substring(1);
         }
         return path;
+    }
+
+    public static <T> List<List<T>> listSplit(List<T> list, int maxNum) {
+        final var result = new ArrayList<List<T>>();
+        var index = 0;
+        while (index < list.size()) {
+            if (index + maxNum <= list.size()) {
+                result.add(list.subList(index, index + maxNum));
+            } else {
+                result.add(list.subList(index, list.size()));
+            }
+            index += maxNum;
+        }
+        return result;
     }
 }
