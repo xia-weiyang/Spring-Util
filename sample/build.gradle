@@ -9,7 +9,7 @@ version = '0.0.1-SNAPSHOT'
 description = "oldtime-sample"
 sourceCompatibility = 17
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
 	options.encoding = 'UTF-8'
 }
 
@@ -20,10 +20,6 @@ repositories {
 
 repositories {
 	mavenCentral()
-}
-
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = "UTF-8"
 }
 
 

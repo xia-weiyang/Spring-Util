@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.jiushig'
-version = '1.5'
+version = '1.6'
 description = "sprint-util"
 sourceCompatibility = 17
 
@@ -18,6 +18,10 @@ dependencies {
     api 'com.auth0:java-jwt:3.4.0'
     api 'com.google.code.gson:gson:2.8.5'
     api 'org.bouncycastle:bcprov-jdk15on:1.65'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
 
 publishing {
