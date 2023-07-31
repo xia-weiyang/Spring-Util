@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zk on 2018/8/15.
@@ -369,9 +371,19 @@ public class CommonUtil {
      */
     public static String formatPath(String path) {
         if (path == null) return "";
-        if (path.startsWith("http")) return "";
         while (path.startsWith("/")) {
             path = path.substring(1);
+        }
+        if (path.contains("http")) {
+            Pattern pattern = Pattern.compile("http.*?\\.[A-z]+?/");
+            Matcher matcher = pattern.matcher(path);
+            boolean find = matcher.find();
+            if (find) {
+                path = path.replaceFirst("http.*?\\.[A-z]+?/", "");
+                return formatPath(path);
+            } else {
+                return "";
+            }
         }
         return path;
     }
