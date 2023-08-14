@@ -129,7 +129,7 @@ public class Date1Util {
      */
     public static String getPreviousTime(int minutes) {
         long currentTime = System.currentTimeMillis();
-        currentTime -= (minutes * 60 * 1000);
+        currentTime -= (minutes * 60 * 1000L);
         return threadLocalDateFormat.get().format(new Date(currentTime));
     }
 }
