@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.jiushig'
-version = '1.8'
+version = '1.9'
 description = "sprint-util"
 sourceCompatibility = 17
 

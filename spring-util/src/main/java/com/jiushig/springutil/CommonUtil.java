@@ -401,4 +401,14 @@ public class CommonUtil {
         }
         return result;
     }
+
+    /**
+     * 获取文件名字，包含后缀名
+     */
+    public static String getFileName(String path) {
+        if (path == null || path.isEmpty()) return "";
+        if (!path.contains("/")) return path;
+        int lastIndexOf = path.lastIndexOf("/");
+        return path.substring(lastIndexOf + 1);
+    }
 }
