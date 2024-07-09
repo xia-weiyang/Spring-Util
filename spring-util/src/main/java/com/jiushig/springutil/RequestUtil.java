@@ -10,8 +10,8 @@ import java.util.Objects;
 /**
  * Created by zk on 2018/9/3.
  */
-public class SessionUtil {
-    private static final Logger logger = LoggerFactory.getLogger(SessionUtil.class);
+public class RequestUtil {
+    private static final Logger logger = LoggerFactory.getLogger(RequestUtil.class);
 
     public static void set(String key, Object object) {
         try {

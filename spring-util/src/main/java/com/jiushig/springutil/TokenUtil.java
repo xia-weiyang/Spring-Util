@@ -8,8 +8,6 @@ import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -25,13 +23,11 @@ public class TokenUtil {
 
     private static long intervalTime;  // 间隔时间
     private static String issuer;
-    private static String[] tokenHeaders;
 
     private static Algorithm algorithm;
 
     public static final String KEY_USER_ID = "userId";
     public static final String KEY_TIME = "time";
-    public static final String KEY_IP = "ip";
 
     /**
      * 初始化Token
@@ -40,19 +36,14 @@ public class TokenUtil {
      * @param time   过期时间 单位m
      * @param issuer
      */
-    public static void init(String secret, int time, String issuer, String[] tokenHeaders) {
+    public static void init(String secret, int time, String issuer) {
         TokenUtil.issuer = issuer;
-        TokenUtil.tokenHeaders = tokenHeaders;
         TokenUtil.intervalTime = time * 1000 * 60;
         try {
             algorithm = Algorithm.HMAC256(secret);
         } catch (Exception e) {
             throw new RuntimeException("Token init fail");
         }
-    }
-
-    public static void init(String secret, int time, String issuer) {
-        TokenUtil.init(secret, time, issuer, null);
     }
 
     /**
@@ -96,9 +87,9 @@ public class TokenUtil {
      * @return 可能为null
      */
     public static DecodedJWT getToken(boolean isExpireTime) {
-        DecodedJWT jwt = (DecodedJWT) SessionUtil.get("tokenInfo");
+        DecodedJWT jwt = (DecodedJWT) RequestUtil.get("tokenInfo");
         if (jwt != null) return jwt;
-        return getToken(getTokenFromRequest(Objects.requireNonNull(SessionUtil.getRequestAttribute()).getRequest()), isExpireTime);
+        return getToken(getTokenFromRequest(Objects.requireNonNull(RequestUtil.getRequestAttribute()).getRequest()), isExpireTime);
     }
 
     public static DecodedJWT getToken() {
@@ -106,11 +97,9 @@ public class TokenUtil {
     }
 
     private static String getTokenFromRequest(HttpServletRequest request) {
-        if (tokenHeaders == null || tokenHeaders.length == 0)
-            return request.getHeader("Authorization");
-        for (String string : tokenHeaders) {
-            if (!CommonUtil.isEmpty(request.getHeader(string)))
-                return request.getHeader(string);
+        Object token = request.getAttribute("token");
+        if(token != null){
+            return token.toString();
         }
         return null;
     }
@@ -121,7 +110,7 @@ public class TokenUtil {
      * @return
      */
     public static String getTokenStr() {
-        return getTokenFromRequest(Objects.requireNonNull(SessionUtil.getRequestAttribute()).getRequest());
+        return getTokenFromRequest(Objects.requireNonNull(RequestUtil.getRequestAttribute()).getRequest());
     }
 
     /**
@@ -144,7 +133,7 @@ public class TokenUtil {
                 logger.warn("Token expired :" + token);
                 return null;
             }
-        SessionUtil.set("tokenInfo", verify);
+        RequestUtil.set("tokenInfo", verify);
         return verify;
     }
 
