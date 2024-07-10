@@ -74,7 +74,7 @@ public class AES {
      * @return
      */
     public static String encrypt(String text, String pwd) {
-        return BASE64.encrypt(encrypt(text.getBytes(), pwdHandler(pwd)));
+        return BASE64.encrypt(encrypt(text.getBytes(StandardCharsets.UTF_8), pwdHandler(pwd)));
     }
 
     /**
