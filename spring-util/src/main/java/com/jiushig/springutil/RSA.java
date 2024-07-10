@@ -27,19 +27,19 @@ public class RSA {
         PublicKey publicKey = keyPair.getPublic();
 
         String publicStr = new String(Base64.encodeBase64(publicKey.getEncoded()));
-        logger.info("公钥：" + publicStr);
+        logger.info("publicKey:" + publicStr);
 
         //获取私钥，并以base64格式打印出来
         PrivateKey privateKey = keyPair.getPrivate();
         String privateStr = new String(Base64.encodeBase64(privateKey.getEncoded()));
-        logger.info("私钥：" + privateStr);
+        logger.info("privateKey:" + privateStr);
 
         //公钥加密
-        String msg = encrypt(publicStr, "RSA");
-        logger.info("加密后：" + msg);
+        String msg = encryptBase64(publicStr, "RSA");
+        logger.info("encrypt:" + msg);
 
         //私钥解密
-        logger.info("解密后：" + decrypt(privateStr, msg));
+        logger.info("decrypt:" + decryptBase64(privateStr, msg));
     }
 
     //生成密钥对
@@ -81,26 +81,32 @@ public class RSA {
 
     /**
      * 通过公钥加密
-     *
-     * @param publicKey
-     * @param msg
-     * @return
-     * @throws Exception
      */
     public static String encrypt(String publicKey, String msg) throws Exception {
         return encrypt(msg, getPublicKey(publicKey));
     }
 
     /**
+     * 通过公钥加密  Base64
+     */
+    public static String encryptBase64(String publicKey, String msg) throws Exception {
+        final byte[] result = encrypt(msg.getBytes(), getPublicKey(publicKey));
+        return Base64.encodeBase64String(result);
+    }
+
+    /**
      * 通过私钥解密
-     *
-     * @param privateKey
-     * @param msg
-     * @return
-     * @throws Exception
      */
     public static String decrypt(String privateKey, String msg) throws Exception {
         return decrypt(msg, getPrivateKey(privateKey));
+    }
+
+    /**
+     * 通过公钥解密  Base64
+     */
+    public static String decryptBase64(String privateKey, String msg) throws Exception {
+        final byte[] result = decrypt(Base64.decodeBase64(msg.getBytes()), getPrivateKey(privateKey));
+        return new String(result);
     }
 
 
