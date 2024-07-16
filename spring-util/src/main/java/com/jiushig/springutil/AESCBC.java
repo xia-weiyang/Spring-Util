@@ -65,12 +65,12 @@ public class AESCBC {
      * @param pwdBytes  加密密码字节数组
      * @return 返回加密后的密文字节数组，加密错误返回null
      */
-    private static byte[] encrypt(byte[] textBytes, byte[] pwdBytes) {
+    private static byte[] encrypt(byte[] textBytes, byte[] pwdBytes, byte[] ivBytes) {
         try {
             SecretKeySpec keySpec = new SecretKeySpec(pwdBytes, ENCRY_ALGORITHM);
             Cipher cipher = Cipher.getInstance(CIPHER_MODE, "BC");
             AlgorithmParameters params = AlgorithmParameters.getInstance("AES");
-            params.init(new IvParameterSpec(pwdBytes));
+            params.init(new IvParameterSpec(ivBytes));
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, params);
             return cipher.doFinal(textBytes);
         } catch (Exception e) {
@@ -86,7 +86,15 @@ public class AESCBC {
      * @return
      */
     public static String encrypt(String text, String pwd) {
-        return BASE64.encrypt(encrypt(text.getBytes(StandardCharsets.UTF_8), pwdHandler(pwd)));
+        final var pwdBytes = pwdHandler(pwd);
+        return BASE64.encrypt(encrypt(text.getBytes(StandardCharsets.UTF_8), pwdBytes, pwdBytes));
+    }
+
+    public static String encrypt1(String text, String pwd) {
+        String[] split = pwd.split("-");
+        final var pwdBytes = pwdHandler(split[0]);
+        final var ivBytes = pwdHandler(split[1]);
+        return BASE64.encrypt(encrypt(text.getBytes(StandardCharsets.UTF_8), pwdBytes, ivBytes));
     }
 
     /**
@@ -96,12 +104,12 @@ public class AESCBC {
      * @param pwdBytes  解密密码字节数组
      * @return 返回解密后的明文字节数组，解密错误返回null
      */
-    private static byte[] decrypt(byte[] textBytes, byte[] pwdBytes) {
+    private static byte[] decrypt(byte[] textBytes, byte[] pwdBytes, byte[] ivBytes) {
         try {
             SecretKeySpec keySpec = new SecretKeySpec(pwdBytes, ENCRY_ALGORITHM);
-            Cipher cipher = Cipher.getInstance(CIPHER_MODE,"BC");
+            Cipher cipher = Cipher.getInstance(CIPHER_MODE, "BC");
             AlgorithmParameters params = AlgorithmParameters.getInstance("AES");
-            params.init(new IvParameterSpec(pwdBytes));
+            params.init(new IvParameterSpec(ivBytes));
             cipher.init(Cipher.DECRYPT_MODE, keySpec, params);
             return cipher.doFinal(textBytes);
         } catch (Exception e) {
@@ -117,7 +125,15 @@ public class AESCBC {
      * @return
      */
     public static String decrypt(String text, String pwd) {
-        return new String(decrypt(BASE64.decryptToByte(text), pwdHandler(pwd)), StandardCharsets.UTF_8);
+        final var pwdBytes = pwdHandler(pwd);
+        return new String(decrypt(BASE64.decryptToByte(text), pwdBytes, pwdBytes), StandardCharsets.UTF_8);
+    }
+
+    public static String decrypt1(String text, String pwd) {
+        String[] split = pwd.split("-");
+        final var pwdBytes = pwdHandler(split[0]);
+        final var ivBytes = pwdHandler(split[1]);
+        return new String(decrypt(BASE64.decryptToByte(text), pwdBytes, ivBytes), StandardCharsets.UTF_8);
     }
 
 }
