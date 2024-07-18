@@ -239,6 +239,7 @@ public class HttpUtil {
         private String body;
 
         public Builder setHeaders(String name, String value) {
+            headers.remove(name);
             headers.add(name, value);
             return this;
         }
