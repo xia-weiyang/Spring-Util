@@ -108,7 +108,7 @@ public class HttpUtil {
 
     public static <T> T get(Builder builder, TypeToken<T> typeToken, HttpPredicate<T> predicate) {
         T t = result(doGet(builder), typeToken);
-        if (!predicate.predicate(t, builder)) {
+        if (predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doGet(builder), typeToken);
         }
@@ -197,7 +197,7 @@ public class HttpUtil {
      */
     public static <T> T post(Builder builder, Class<T> c, HttpPredicate<T> predicate) {
         T t = result(doPost(builder), c);
-        if (!predicate.predicate(t, builder)) {
+        if (predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doPost(builder), c);
         }
@@ -206,7 +206,7 @@ public class HttpUtil {
 
     public static <T> T post(Builder builder, TypeToken<T> typeToken, HttpPredicate<T> predicate) {
         T t = result(doPost(builder), typeToken);
-        if (!predicate.predicate(t, builder)) {
+        if (predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doPost(builder), typeToken);
         }
