@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
 /**
  * Created by zkzmz on 2017/11/4.
@@ -18,14 +17,10 @@ public class HttpUtil {
 
     private final static Logger logger = LoggerFactory.getLogger(HttpUtil.class);
 
-    private static RestTemplate restTemplate = new RestTemplate();
-
-    private static String token;
+    private static final RestTemplate restTemplate = new RestTemplate();
 
     /**
      * 获取请求头
-     *
-     * @return
      */
     private static HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
@@ -33,14 +28,9 @@ public class HttpUtil {
         headers.add("Accpet-Encoding", "gzip");
         headers.add("Content-Encoding", "UTF-8");
         headers.add("Content-Type", "application/json; charset=UTF-8");
-        if (token != null) headers.add("Authorization", token);
         return headers;
     }
 
-    public static void setToken(String token) {
-        HttpUtil.token = token;
-        logger.debug(LoggerBuilder.get("Token update success.").setDescribe(token).build());
-    }
 
     private static <T> T request(Builder builder, HttpMethod method, Class<T> tClass) {
         assert builder != null;
@@ -107,18 +97,18 @@ public class HttpUtil {
      * @param <T>
      * @return
      */
-    public static <T> T get(Builder builder, Class<T> c, Predicate<T> predicate) {
+    public static <T> T get(Builder builder, Class<T> c, HttpPredicate<T> predicate) {
         T t = result(doGet(builder), c);
-        if (!predicate.test(t)) {
+        if (predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doGet(builder), c);
         }
         return t;
     }
 
-    public static <T> T get(Builder builder, TypeToken<T> typeToken, Predicate<T> predicate) {
+    public static <T> T get(Builder builder, TypeToken<T> typeToken, HttpPredicate<T> predicate) {
         T t = result(doGet(builder), typeToken);
-        if (!predicate.test(t)) {
+        if (!predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doGet(builder), typeToken);
         }
@@ -205,18 +195,18 @@ public class HttpUtil {
      * @param <T>
      * @return
      */
-    public static <T> T post(Builder builder, Class<T> c, Predicate<T> predicate) {
+    public static <T> T post(Builder builder, Class<T> c, HttpPredicate<T> predicate) {
         T t = result(doPost(builder), c);
-        if (!predicate.test(t)) {
+        if (!predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doPost(builder), c);
         }
         return t;
     }
 
-    public static <T> T post(Builder builder, TypeToken<T> typeToken, Predicate<T> predicate) {
+    public static <T> T post(Builder builder, TypeToken<T> typeToken, HttpPredicate<T> predicate) {
         T t = result(doPost(builder), typeToken);
-        if (!predicate.test(t)) {
+        if (!predicate.predicate(t, builder)) {
             builder.refreshHttpHeaders();
             return result(doPost(builder), typeToken);
         }
